@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リアルタイム Looker Studio レポート</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      text-align: center;
+    }
+
+    h2 {
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: calc(100vh - 60px);
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1em;
+        padding: 8px;
+      }
+    }
+  </style>
+  <script>
+    // 10秒ごとに自動更新（モバイルでもキャッシュ対策）
+    setInterval(() => {
+      const iframe = document.getElementById('looker-report');
+      const currentSrc = iframe.src.split('?')[0];
+      iframe.src = `${currentSrc}?reload=${Date.now()}`;
+    }, 10000);
+  </script>
+</head>
+<body>
+  <h2>リアルタイム Looker Studio レポート</h2>
+  <iframe
+    id="looker-report"
+    src="https://lookerstudio.google.com/embed/reporting/4af8079e-e71c-411d-a827-722b146bd6ab/page/p_0"
+    allowfullscreen
+  ></iframe>
+</body>
+</html>
+
