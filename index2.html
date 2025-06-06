@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Looker Studio レポート</title>
+  <title>Looker Studio パスワード保護ページ</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
       text-align: center;
+      margin: 0;
+      background-color: #f5f5f5;
     }
-    h2 {
-      padding: 10px;
-      font-size: 1.2em;
+    .hidden {
+      display: none;
     }
     iframe {
       border: none;
@@ -36,15 +35,37 @@
   </style>
 </head>
 <body>
-  <h2>Looker Studio レポート</h2>
-  <button class="refresh-btn" onclick="refreshIframe()">🔄 更新</button>
-  <iframe
-    id="looker-report"
-    src="https://lookerstudio.google.com/embed/reporting/4af8079e-e71c-411d-a827-722b146bd6ab/page/p_0"
-    allowfullscreen
-  ></iframe>
+  <div id="auth">
+    <h2>パスワードを入力してください</h2>
+    <input type="password" id="password" placeholder="パスワード" />
+    <button onclick="checkPassword()">送信</button>
+    <p id="error" style="color:red;"></p>
+  </div>
+
+  <div id="content" class="hidden">
+    <h2>Looker Studio レポート</h2>
+    <button class="refresh-btn" onclick="refreshIframe()">🔄 更新</button>
+    <iframe
+      id="looker-report"
+      src="https://lookerstudio.google.com/embed/reporting/4af8079e-e71c-411d-a827-722b146bd6ab/page/p_0"
+      allowfullscreen
+    ></iframe>
+  </div>
 
   <script>
+    const correctPassword = "910"; // ← ここを好きなパスワードに変更
+
+    function checkPassword() {
+      const input = document.getElementById('password').value;
+      const error = document.getElementById('error');
+      if (input === correctPassword) {
+        document.getElementById('auth').style.display = 'none';
+        document.getElementById('content').classList.remove('hidden');
+      } else {
+        error.textContent = "パスワードが間違っています。";
+      }
+    }
+
     function refreshIframe() {
       const iframe = document.getElementById('looker-report');
       iframe.src = iframe.src;
